@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calc-Books | Matematica para Estanterias</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  >
+  <style>
+    :root {
+      --page-bg: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f7fbff;
+      --brand: #355c7d;
+      --brand-deep: #27445c;
+      --accent: #c9dff2;
+      --text-main: #22313f;
+      --text-soft: #617282;
+      --border-soft: rgba(39, 68, 92, 0.12);
+      --shadow-soft: 0 16px 36px rgba(34, 49, 63, 0.08);
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(201, 223, 242, 0.8), transparent 28%),
+        linear-gradient(180deg, #f8fbfe 0%, var(--page-bg) 100%);
+      color: var(--text-main);
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .navbar-brand,
+    .section-title {
+      color: var(--brand-deep);
+    }
+
+    .hero-panel,
+    .insight-card,
+    .card-shell {
+      background-color: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-panel {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-soft) 100%);
+    }
+
+    .card-shell {
+      overflow: hidden;
+    }
+
+    .text-soft {
+      color: var(--text-soft);
+    }
+
+    .btn-primary {
+      background-color: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: var(--brand-deep);
+      border-color: var(--brand-deep);
+    }
+
+    .btn-outline-primary {
+      color: var(--brand);
+      border-color: rgba(53, 92, 125, 0.35);
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus {
+      background-color: var(--brand);
+      border-color: var(--brand);
+      color: #ffffff;
+    }
+
+    .interactive-item {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .interactive-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 34px rgba(34, 49, 63, 0.12);
+      border-color: rgba(39, 68, 92, 0.22);
+    }
+
+    .calculator-intro {
+      max-width: 42rem;
+    }
+
+    .form-section {
+      background: linear-gradient(180deg, rgba(247, 251, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(39, 68, 92, 0.08);
+      border-radius: 1rem;
+    }
+
+    .form-control,
+    .input-group-text {
+      border-color: rgba(39, 68, 92, 0.14);
+    }
+
+    .form-control:focus {
+      border-color: rgba(53, 92, 125, 0.4);
+      box-shadow: 0 0 0 0.25rem rgba(53, 92, 125, 0.12);
+    }
+
+    .input-group-text {
+      background-color: #f8fbfe;
+      color: var(--text-soft);
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--brand-deep);
+    }
+
+    .result-table th {
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+
+    .badge-soft {
+      background-color: rgba(53, 92, 125, 0.12);
+      color: var(--brand-deep);
+      border: 1px solid rgba(53, 92, 125, 0.12);
+    }
+
+    .summary-tile {
+      background-color: #f8fbfe;
+      border: 1px solid rgba(39, 68, 92, 0.08);
+      border-radius: 1rem;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border-soft);
+      background-color: rgba(255, 255, 255, 0.84);
+    }
+  </style>
+</head>
+<body>
+  <!-- Interfaz: navegacion simple para moverse entre la calculadora y la explicacion -->
+  <header>
+    <nav class="navbar navbar-expand-lg sticky-top">
+      <div class="container py-2">
+        <a class="navbar-brand fw-bold" href="#top">Calc-Books</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Alternar navegacion"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#calculator">Calculadora</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#method">Metodo</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Interfaz: introduccion que explica el objetivo academico de la aplicacion -->
+    <section class="py-5">
+      <div class="container py-lg-4">
+        <div class="hero-panel p-4 p-lg-5">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+              <span class="badge badge-soft rounded-pill px-3 py-2 mb-3">Demostracion academica</span>
+              <h1 class="display-5 fw-bold mb-3 section-title">Matematica para planificar estanterias de biblioteca</h1>
+              <p class="lead text-soft mb-4">
+                Esta aplicacion web muestra como la medicion, la division y el analisis de capacidad ayudan
+                a organizar libros de ciencia, historia y tecnologia dentro del mobiliario de una biblioteca.
+              </p>
+              <a href="#calculator" class="btn btn-primary btn-lg px-4">Iniciar calculo</a>
+            </div>
+            <div class="col-lg-5">
+              <div class="insight-card interactive-item p-4 h-100">
+                <h2 class="h4 fw-semibold mb-3">Que demuestra la aplicacion</h2>
+                <p class="text-soft mb-0">
+                  El usuario ingresa cantidades de libros y medidas de estanteria. Luego la app calcula la capacidad
+                  por estante, la demanda estimada por categoria, el uso total del mobiliario y una recomendacion simple de organizacion.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interfaz: area principal de calculo con un formulario compacto y resultados dentro de tarjetas -->
+    <section id="calculator" class="pb-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-4">
+          <div class="col-lg-8">
+            <h2 class="h3 fw-bold section-title">Panel de calculo</h2>
+            <p class="text-soft mb-0 calculator-intro mx-auto">
+              Los campos de entrada se agrupan dentro de una sola tarjeta de Bootstrap para mantener la interfaz limpia,
+              mientras que los resultados permanecen separados en tarjetas de resumen faciles de leer.
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <!-- Interfaz: el formulario completo vive dentro de una sola tarjeta de Bootstrap para reducir ruido visual -->
+            <div class="card card-shell interactive-item h-100">
+              <div class="card-body p-4 p-lg-5">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                  <div>
+                    <h2 class="h3 fw-bold mb-2 section-title">Datos de la biblioteca</h2>
+                    <p class="text-soft mb-0">Ingresa solo los valores esenciales necesarios para el calculo de estantes.</p>
+                  </div>
+                </div>
+
+                <form id="libraryForm" class="row g-3">
+                  <div class="col-12">
+                    <div class="form-section p-3 p-md-4">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h6 text-uppercase text-soft fw-bold mb-0">Libros por categoria</h3>
+                        <span class="badge badge-soft rounded-pill px-3 py-2">3 campos</span>
+                      </div>
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <label for="scienceBooks" class="form-label">Ciencia</label>
+                          <input type="number" class="form-control" id="scienceBooks" min="0" step="1" value="120" required>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="historyBooks" class="form-label">Historia</label>
+                          <input type="number" class="form-control" id="historyBooks" min="0" step="1" value="85" required>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="technologyBooks" class="form-label">Tecnologia</label>
+                          <input type="number" class="form-control" id="technologyBooks" min="0" step="1" value="96" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-section p-3 p-md-4">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h6 text-uppercase text-soft fw-bold mb-0">Medidas de estanteria</h3>
+                        <span class="badge badge-soft rounded-pill px-3 py-2">3 campos</span>
+                      </div>
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <label for="shelfWidth" class="form-label">Ancho del estante</label>
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="shelfWidth" min="1" step="0.1" value="90" required>
+                            <span class="input-group-text">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="bookThickness" class="form-label">Grosor del libro</label>
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="bookThickness" min="0.1" step="0.1" value="3" required>
+                            <span class="input-group-text">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="availableShelves" class="form-label">Estantes disponibles</label>
+                          <input type="number" class="form-control" id="availableShelves" min="1" step="1" value="12" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 d-grid d-sm-flex gap-2 pt-1">
+                    <button type="submit" class="btn btn-primary px-4">Calcular distribucion</button>
+                    <button type="button" id="resetButton" class="btn btn-outline-primary px-4">Restablecer valores</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <!-- Interfaz: tarjeta resumen para el calculo de libros por estante -->
+                <div class="card card-shell interactive-item h-100">
+                  <div class="card-body p-4">
+                    <p class="text-soft text-uppercase fw-bold small mb-2">Libros por estante</p>
+                    <div id="booksPerShelfResult" class="metric-value">30</div>
+                    <p class="text-soft mb-0 mt-3">
+                      Se calcula dividiendo el ancho del estante entre el grosor promedio del libro y tomando solo libros completos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <!-- Interfaz: tarjeta resumen para la capacidad total del mobiliario -->
+                <div class="card card-shell interactive-item h-100">
+                  <div class="card-body p-4">
+                    <p class="text-soft text-uppercase fw-bold small mb-2">Capacidad total de estantes</p>
+                    <div id="totalCapacityResult" class="metric-value">360</div>
+                    <p class="text-soft mb-0 mt-3">
+                      Este valor muestra la cantidad maxima de libros que todos los estantes disponibles pueden almacenar.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <!-- Interfaz: la tabla de resultados y el estado global se presentan dentro de una tarjeta Bootstrap -->
+                <div class="card card-shell">
+                  <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                      <div>
+                        <h2 class="h4 fw-bold mb-1 section-title">Demanda de estantes por categoria</h2>
+                        <p class="text-soft mb-0">Estimacion de estantes requeridos para cada seccion de la biblioteca.</p>
+                      </div>
+                      <span id="furnitureStatus" class="badge rounded-pill text-bg-success px-3 py-2">El mobiliario es suficiente</span>
+                    </div>
+
+                    <div class="table-responsive">
+                      <table class="table align-middle result-table mb-0">
+                        <thead>
+                          <tr>
+                            <th>Categoria</th>
+                            <th>Libros</th>
+                            <th>Estantes necesarios</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Ciencia</td>
+                            <td id="scienceCountCell">120</td>
+                            <td id="scienceShelvesCell">4</td>
+                          </tr>
+                          <tr>
+                            <td>Historia</td>
+                            <td id="historyCountCell">85</td>
+                            <td id="historyShelvesCell">3</td>
+                          </tr>
+                          <tr>
+                            <td>Tecnologia</td>
+                            <td id="technologyCountCell">96</td>
+                            <td id="technologyShelvesCell">4</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="row g-3 mt-2">
+                      <div class="col-md-4">
+                        <div class="card summary-tile h-100">
+                          <div class="card-body p-3">
+                            <p class="text-soft small text-uppercase fw-bold mb-1">Estantes requeridos</p>
+                            <p id="requiredShelvesResult" class="h3 fw-bold mb-0">11</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="card summary-tile h-100">
+                          <div class="card-body p-3">
+                            <p class="text-soft small text-uppercase fw-bold mb-1">Estantes disponibles</p>
+                            <p id="availableShelvesResult" class="h3 fw-bold mb-0">12</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="card summary-tile h-100">
+                          <div class="card-body p-3">
+                            <p class="text-soft small text-uppercase fw-bold mb-1">Total de libros</p>
+                            <p id="totalBooksResult" class="h3 fw-bold mb-0">301</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <!-- Interfaz: la recomendacion final tambien esta dentro de una tarjeta para mantener consistencia -->
+                <div class="card card-shell interactive-item">
+                  <div class="card-body p-4">
+                    <h2 class="h4 fw-bold mb-3 section-title">Recomendacion de organizacion</h2>
+                    <p id="recommendationText" class="text-soft mb-0">
+                      Ubica ciencia cerca del centro porque usa la mayor parte del espacio, y despues organiza historia y tecnologia
+                      en estantes cercanos para mantener la coleccion equilibrada y facil de consultar.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interfaz: tarjetas explicativas para ayudar a docentes o estudiantes a explicar la matematica -->
+    <section id="method" class="pb-5">
+      <div class="container">
+        <div class="text-center mb-4">
+          <h2 class="h3 fw-bold section-title">Como funciona la matematica</h2>
+          <p class="text-soft mb-0">Estas notas breves hacen que la pagina sea mas facil de explicar en clase o en una presentacion.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <article class="insight-card interactive-item p-4 h-100">
+              <h3 class="h5 fw-semibold mb-3">1. Capacidad por division</h3>
+              <p class="text-soft mb-0">
+                La capacidad de un estante se obtiene dividiendo el ancho del estante entre el grosor promedio del libro.
+                El resultado se redondea hacia abajo porque no se puede almacenar una fraccion de libro.
+              </p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="insight-card interactive-item p-4 h-100">
+              <h3 class="h5 fw-semibold mb-3">2. Demanda de estantes por categoria</h3>
+              <p class="text-soft mb-0">
+                Cada categoria usa el techo de libros dividido entre libros por estante. Esto redondea hacia arriba para asegurar
+                que cada libro restante tenga espacio dentro del estante correspondiente.
+              </p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="insight-card interactive-item p-4 h-100">
+              <h3 class="h5 fw-semibold mb-3">3. Decision sobre el mobiliario</h3>
+              <p class="text-soft mb-0">
+                Al comparar los estantes requeridos con los disponibles y los libros totales con la capacidad total,
+                la app decide si el mobiliario actual es suficiente.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interfaz: pie de pagina con un resumen breve de la demostracion -->
+  <footer class="footer py-4">
+    <div class="container text-center">
+      <p class="mb-1 fw-semibold">Calc-Books</p>
+      <p class="mb-0 text-soft">Una aplicacion para explicar mediciones y planificacion de espacio en bibliotecas.</p>
+    </div>
+  </footer>
+
+  <!-- Calculos: JavaScript lee los datos, calcula el uso de estantes, actualiza la interfaz y genera una recomendacion -->
+  <script>
+    const libraryForm = document.getElementById("libraryForm");
+    const resetButton = document.getElementById("resetButton");
+
+    const defaults = {
+      scienceBooks: 120,
+      historyBooks: 85,
+      technologyBooks: 96,
+      shelfWidth: 90,
+      bookThickness: 3,
+      availableShelves: 12
+    };
+
+    function getInputValue(id) {
+      return Number(document.getElementById(id).value) || 0;
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function formatStatus(isEnough) {
+      const statusBadge = document.getElementById("furnitureStatus");
+
+      if (isEnough) {
+        statusBadge.className = "badge rounded-pill text-bg-success px-3 py-2";
+        statusBadge.textContent = "El mobiliario es suficiente";
+        return;
+      }
+
+      statusBadge.className = "badge rounded-pill text-bg-danger px-3 py-2";
+      statusBadge.textContent = "Se necesita mas mobiliario";
+    }
+
+    function buildRecommendation(categories, booksPerShelf, shelvesAvailable, shelvesRequired, totalBooks, totalCapacity) {
+      const sortedCategories = [...categories].sort((a, b) => b.books - a.books);
+      const firstCategory = sortedCategories[0].name;
+      const secondCategory = sortedCategories[1].name;
+      const thirdCategory = sortedCategories[2].name;
+
+      if (booksPerShelf === 0) {
+        return "Aumenta el ancho del estante o reduce el grosor promedio del libro, porque las medidas actuales no permiten que ni un solo libro quepa en un estante.";
+      }
+
+      if (shelvesRequired > shelvesAvailable || totalBooks > totalCapacity) {
+        const missingShelves = Math.max(shelvesRequired - shelvesAvailable, 0);
+        const overflowBooks = Math.max(totalBooks - totalCapacity, 0);
+
+        if (overflowBooks === 0) {
+          return "Comienza con " + firstCategory + " en los primeros estantes, luego ubica " + secondCategory + " y " + thirdCategory + ". La capacidad total alcanza en teoria, pero las secciones todavia necesitan al menos " + missingShelves + " estante" + (missingShelves === 1 ? "" : "s") + " adicional" + (missingShelves === 1 ? "" : "es") + " para mantenerse organizadas por categoria.";
+        }
+
+        return "Comienza con " + firstCategory + " en los primeros estantes, luego ubica " + secondCategory + " y " + thirdCategory + ". El mobiliario actual no es suficiente, asi que debes agregar al menos " + missingShelves + " estante" + (missingShelves === 1 ? "" : "s") + " mas. En este momento, aproximadamente " + overflowBooks + " libro" + (overflowBooks === 1 ? "" : "s") + " superan la capacidad disponible.";
+      }
+
+      if (shelvesRequired === shelvesAvailable) {
+        return "Asigna los estantes con cuidado: coloca primero " + firstCategory + " porque ocupa mas espacio, luego continua con " + secondCategory + " y termina con " + thirdCategory + ". El mobiliario es suficiente, pero no queda capacidad de reserva.";
+      }
+
+      const freeCapacity = totalCapacity - totalBooks;
+      return "Ubica " + firstCategory + " en la zona mas accesible porque necesita mas espacio, y despues organiza " + secondCategory + " y " + thirdCategory + " en estantes cercanos. El mobiliario tiene capacidad de reserva para aproximadamente " + freeCapacity + " libros mas en la distribucion actual.";
+    }
+
+    function calculateLibraryLayout() {
+      const scienceBooks = Math.max(Math.floor(getInputValue("scienceBooks")), 0);
+      const historyBooks = Math.max(Math.floor(getInputValue("historyBooks")), 0);
+      const technologyBooks = Math.max(Math.floor(getInputValue("technologyBooks")), 0);
+      const shelfWidth = Math.max(getInputValue("shelfWidth"), 0);
+      const bookThickness = Math.max(getInputValue("bookThickness"), 0);
+      const availableShelves = Math.max(Math.floor(getInputValue("availableShelves")), 0);
+
+      /* Calculos:
+         1. Libros por estante usa floor(ancho / grosor) porque solo caben libros completos.
+         2. Estantes necesarios por categoria usa ceiling(libros de la categoria / libros por estante) para reservar almacenamiento completo.
+         3. La capacidad total multiplica la capacidad de un estante por los estantes disponibles.
+         4. El mobiliario es suficiente solo cuando los estantes requeridos y los libros totales caben en el sistema disponible.
+      */
+      const booksPerShelf = bookThickness > 0 ? Math.floor(shelfWidth / bookThickness) : 0;
+      const scienceShelves = booksPerShelf > 0 ? Math.ceil(scienceBooks / booksPerShelf) : 0;
+      const historyShelves = booksPerShelf > 0 ? Math.ceil(historyBooks / booksPerShelf) : 0;
+      const technologyShelves = booksPerShelf > 0 ? Math.ceil(technologyBooks / booksPerShelf) : 0;
+
+      const totalBooks = scienceBooks + historyBooks + technologyBooks;
+      const totalShelfCapacity = booksPerShelf * availableShelves;
+      const requiredShelves = scienceShelves + historyShelves + technologyShelves;
+      const furnitureIsEnough = booksPerShelf > 0 && requiredShelves <= availableShelves && totalBooks <= totalShelfCapacity;
+
+      const categories = [
+        { name: "Ciencia", books: scienceBooks, shelves: scienceShelves },
+        { name: "Historia", books: historyBooks, shelves: historyShelves },
+        { name: "Tecnologia", books: technologyBooks, shelves: technologyShelves }
+      ];
+
+      setText("booksPerShelfResult", booksPerShelf);
+      setText("totalCapacityResult", totalShelfCapacity);
+      setText("scienceCountCell", scienceBooks);
+      setText("historyCountCell", historyBooks);
+      setText("technologyCountCell", technologyBooks);
+      setText("scienceShelvesCell", scienceShelves);
+      setText("historyShelvesCell", historyShelves);
+      setText("technologyShelvesCell", technologyShelves);
+      setText("requiredShelvesResult", requiredShelves);
+      setText("availableShelvesResult", availableShelves);
+      setText("totalBooksResult", totalBooks);
+      setText(
+        "recommendationText",
+        buildRecommendation(categories, booksPerShelf, availableShelves, requiredShelves, totalBooks, totalShelfCapacity)
+      );
+
+      formatStatus(furnitureIsEnough);
+    }
+
+    libraryForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      calculateLibraryLayout();
+    });
+
+    resetButton.addEventListener("click", function() {
+      Object.keys(defaults).forEach(function(key) {
+        document.getElementById(key).value = defaults[key];
+      });
+
+      calculateLibraryLayout();
+    });
+
+    calculateLibraryLayout();
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+</body>
+</html>
